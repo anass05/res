@@ -96,7 +96,7 @@ public class Fraction {
     }
 
     /**
-     * La fonction qui retourn un String affichant l'objet
+     * La fonction qui retourne un String affichant l'objet
      * */
     @Override
     public String toString() {
