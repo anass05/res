@@ -12,8 +12,8 @@ public class Main {
 //        Module maths = new Module("Maths",5,75,p);
 //        maths.afficher();
 
-        Fraction f = new Fraction(1,2);
-        Fraction f2 = new Fraction(1,3);
+        Fraction f = new Fraction(1, 2);
+        Fraction f2 = new Fraction(1, 3);
         Fraction f3 = f2.divi(f);
         System.out.println(f3.doubleValue());
 
