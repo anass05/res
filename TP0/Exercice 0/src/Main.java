@@ -10,7 +10,9 @@ public class Main {
         double n = sc.nextDouble();
         System.out.println(harmonique(n));
 
-        triangle((int) n);
+        System.out.print("x = ");
+        int x = sc.nextInt();
+        triangle(x);
 
     }
 
