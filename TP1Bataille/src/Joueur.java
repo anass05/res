@@ -12,7 +12,7 @@ public class Joueur {
     private Grille grille;
 
     /**
-     * Le constructeur par defaut de la classe nom
+     * Le constructeur par defaut de la classe Joueur
      *
      * @param nom le nom du joueur
      */
