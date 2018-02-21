@@ -8,6 +8,7 @@ public class Case {
      * L'état d'une case prend la valeur true si elle a fait l'objet d'un tir et false sinon
      */
     private boolean etat;
+    private Bateau bateau;
 
     /**
      * Le constructeur par defaut de la classe Case
@@ -39,5 +40,14 @@ public class Case {
      */
     public void setEtat(boolean etat) {
         this.etat = etat;
+    }
+
+
+    public Bateau getBateau() {
+        return bateau;
+    }
+
+    public void setBateau(Bateau bateau) {
+        this.bateau = bateau;
     }
 }

@@ -3,9 +3,9 @@ import java.io.InputStreamReader;
 
 /**
  * Cette classe executable gere les tours de jeu pour une bataille navale
- * @author   HAFIDI IMAD
+ *
+ * @author HAFIDI IMAD
  */
-
 public class Jeu {
 
     /**
@@ -27,8 +27,7 @@ public class Jeu {
     public Jeu(String[] args) {
         if (args.length > 0) joueur1 = new Joueur(args[0]);
         else joueur1 = new Joueur("joueur1");
-        if (args.length > 1) joueur2 = new Joueur(args[1]);
-        else joueur2 = new Joueur("joueur2");
+        joueur2 = new JoueurOrdi();
     }
 
     /**
@@ -55,32 +54,62 @@ public class Jeu {
     }
 
     /**
+     * Saisie par le clavier l'orientation a donner au bateau
+     *
+     * @return un booleen qui a pour valeur <i>true</i> si l'orientation saisie est horizontale et <i>false</i> sinon
+     */
+    public static boolean saisieOrientation() {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        while (true) {
+            try {
+                String ch = reader.readLine();
+                if (ch.equals("h")) return true;
+                else if (ch.equals("v")) return false;
+                else System.out.println("Erreur - entrez h ou v");
+            } catch (Exception ex) {
+                System.out.println("Erreur - entrez h ou v");
+            }
+        }
+    }
+
+    /**
      * Gere la phase de tir des deux joueurs
      */
     public void tirs() {
-        System.out.println("PROGRAMME DE TESTS INTERMEDIAIRES");
-        System.out.println("Chaque joueur tire 3 fois sur la grille vide de l'autre");
-        for (int i = 0; i < 3; i++) {
-            System.out.println("Joueur " + joueur1.getNom() + " au tir");
-            System.out.println("Indiquez les coordonnees du tir (x puis y) entre 0 et 9");
-            int x = saisiePosition();
-            int y = saisiePosition();
-            joueur2.getGrille().tir(x,y);
+        while ((!joueur1.aPerdu())&&(!joueur2.aPerdu())) {
+            joueur1.tir(joueur2.getGrille());
             joueur2.getGrille().afficheTirs();
-            System.out.println("Joueur " + joueur2.getNom() + " au tir");
-            System.out.println("Indiquez les coordonnees du tir (x puis y) entre 0 et 9");
-            x = saisiePosition();
-            y = saisiePosition();
-            joueur1.getGrille().tir(x,y);
+            joueur2.tir(joueur1.getGrille());
             joueur1.getGrille().afficheTirs();
         }
+    }
+
+    /**
+     * Gere la phase de placement des bateaux pour les deux joueurs
+     */
+    public void placement() {
+        System.out.println("Bonjour " + joueur1.getNom());
+        System.out.println("Placement des bateaux");
+        System.out.println("----------------------");
+        joueur1.placementBateaux();
+        joueur1.getGrille().affiche();
+        System.out.println("Bonjour " + joueur2.getNom());
+        System.out.println("Placement des bateaux");
+        System.out.println("----------------------");
+        joueur2.placementBateaux();
+        joueur2.getGrille().affiche();
     }
 
     /**
      * Demarre une nouvelle partie
      */
     public void demarre() {
+        placement();
         tirs();
+        if (joueur1.aPerdu()) {
+            if (joueur2.aPerdu()) System.out.println("Match nul !");
+            else System.out.println(joueur2.getNom() + " a gagne !");
+        } else System.out.println(joueur1.getNom() + " a gagne !");
     }
 
     /**
