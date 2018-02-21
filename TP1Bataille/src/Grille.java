@@ -54,25 +54,29 @@ public class Grille {
         return grille;
     }
 
-    public void place(Bateau b, int x, int y) {
-        boolean isHorizontal = false;
-        b.horizontal = isHorizontal;
+    public boolean place(Bateau b, int x, int y) {
+        boolean isHorizontal;
+        isHorizontal = b.horizontal;
         int taille = b.getTaille();
         //clearing old cases from the old position
         for (Case c : b.getCases())
             c.setBateau(null);
         //creating new cases for the new postition
         b.setCases(new ArrayList<>());
-        if (isHorizontal && ((taille + x) <= grille.length)) {
+        if (isHorizontal && ((taille + x) < grille[y].length)) {
             for (int i = 0; i < taille; i++) {
-                b.ajouteCase(grille[x + i][y]);
+                b.ajouteCase(grille[y][x+i]);
             }
+            return true;
         }
-        if (!isHorizontal && ((taille + y) <= grille[x].length)) {
+        if (!isHorizontal && ((taille + y) < grille.length)) {
             for (int i = 0; i < taille; i++) {
-                b.ajouteCase(grille[x][y + i]);
+                b.ajouteCase(grille[y+i][x]);
+                System.out.println("["+(y+i)+"]["+x+"]");
             }
+            return true;
         }
+        return false;
     }
 
     public void affiche() {
@@ -80,7 +84,7 @@ public class Grille {
             for (int j = 0; j < grille[i].length; j++) {
                 String s = grille[i][j].isEtat() ? "o " : " ";
                 if (grille[i][j].getBateau() != null)
-                    s = "b ";
+                    s = grille[i][j].getBateau().getSymbole() + " ";
                 System.out.print(s);
             }
             System.out.println();

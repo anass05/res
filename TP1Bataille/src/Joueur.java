@@ -74,7 +74,11 @@ public class Joueur {
         if (symbole == 'P')
             b = new PorteAvions();
         b.horizontal = orientation;
-        grille.place(b, x, y);
+        boolean placerSuccess;
+        do {
+            placerSuccess = grille.place(b, x, y);
+        } while (!placerSuccess);
+
     }
 
     public boolean aPerdu() {

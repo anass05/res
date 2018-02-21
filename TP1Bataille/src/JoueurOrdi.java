@@ -24,8 +24,8 @@ public class JoueurOrdi extends Joueur {
     public void ajouterUnBateau(char symbole) {
         int x, y;
         boolean orientation;
-        x = new Random(10).nextInt();
-        y = new Random(10).nextInt();
+        x = new Random().nextInt(10);
+        y = new Random().nextInt(10);
         orientation = new Random().nextBoolean();
         Bateau b = null;
         if (symbole == 'C')
@@ -35,7 +35,11 @@ public class JoueurOrdi extends Joueur {
         if (symbole == 'P')
             b = new PorteAvions();
         b.horizontal = orientation;
-        grille.place(b, x, y);
+        boolean placerSuccess;
+        do {
+            placerSuccess = grille.place(b, x, y);
+        } while (!placerSuccess);
+
     }
 
     @Override
