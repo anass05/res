@@ -77,15 +77,15 @@ public class Joueur {
         boolean placerSuccess;
         do {
             placerSuccess = grille.place(b, x, y);
+            bateaux.add(b);
         } while (!placerSuccess);
 
     }
 
     public boolean aPerdu() {
         for (Bateau b : bateaux)
-            if (!b.estCoule()) {
+            if (!b.estCoule())
                 return false;
-            }
         return true;
     }
 

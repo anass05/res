@@ -61,7 +61,7 @@ public class Grille {
         //clearing old cases from the old position
         for (Case c : b.getCases())
             c.setBateau(null);
-        //creating new cases for the new postition
+//        //creating new cases for the new postition
         b.setCases(new ArrayList<>());
         if (isHorizontal && ((taille + x) < grille[y].length)) {
             for (int i = 0; i < taille; i++) {
@@ -72,7 +72,7 @@ public class Grille {
         if (!isHorizontal && ((taille + y) < grille.length)) {
             for (int i = 0; i < taille; i++) {
                 b.ajouteCase(grille[y+i][x]);
-                System.out.println("["+(y+i)+"]["+x+"]");
+                //System.out.println("["+(y+i)+"]["+x+"]");
             }
             return true;
         }

@@ -23,21 +23,22 @@ public class JoueurOrdi extends Joueur {
 
     public void ajouterUnBateau(char symbole) {
         int x, y;
-        boolean orientation;
-        x = new Random().nextInt(10);
-        y = new Random().nextInt(10);
-        orientation = new Random().nextBoolean();
-        Bateau b = null;
-        if (symbole == 'C')
-            b = new Croiseur();
-        if (symbole == 'D')
-            b = new Destroyeur();
-        if (symbole == 'P')
-            b = new PorteAvions();
-        b.horizontal = orientation;
         boolean placerSuccess;
+        boolean orientation;
         do {
+            x = new Random().nextInt(9);
+            y = new Random().nextInt(9);
+            orientation = new Random().nextBoolean();
+            Bateau b = null;
+            if (symbole == 'C')
+                b = new Croiseur();
+            if (symbole == 'D')
+                b = new Destroyeur();
+            if (symbole == 'P')
+                b = new PorteAvions();
+            b.horizontal = orientation;
             placerSuccess = grille.place(b, x, y);
+            bateaux.add(b);
         } while (!placerSuccess);
 
     }

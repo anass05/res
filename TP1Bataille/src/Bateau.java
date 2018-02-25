@@ -18,13 +18,11 @@ public abstract class Bateau {
     }
 
     public boolean estCoule() {
-        boolean coule = true;
-        for (Case c : cases)
-            if (!c.isEtat()) {
-                coule = false;
-                break;
-            }
-        return coule;
+        for (Case c : cases) {
+            if (!c.isEtat())
+                return false;
+        }
+        return true;
     }
 
     public void ajouteCase(Case c) {

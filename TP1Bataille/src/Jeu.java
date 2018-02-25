@@ -22,7 +22,7 @@ public class Jeu {
      * Le constructeur d'un nouveau jeu
      *
      * @param args contient les noms de chacun des joueurs. Si un des noms ou les deux manque,
-     * un nom par defaut est attribue
+     *             un nom par defaut est attribue
      */
     public Jeu(String[] args) {
         if (args.length > 0) joueur1 = new Joueur(args[0]);
@@ -41,7 +41,7 @@ public class Jeu {
         while (pos == -1) {
             try {
                 pos = Integer.parseInt(reader.readLine());
-                if ((pos < 0)||(pos > 9)) {
+                if ((pos < 0) || (pos > 9)) {
                     System.out.println("Erreur - entrez une position entre 0 et 9");
                     pos = -1;
                 }
@@ -76,7 +76,7 @@ public class Jeu {
      * Gere la phase de tir des deux joueurs
      */
     public void tirs() {
-        while ((!joueur1.aPerdu())&&(!joueur2.aPerdu())) {
+        while ((!joueur1.aPerdu()) && (!joueur2.aPerdu())) {
             joueur1.tir(joueur2.getGrille());
             joueur2.getGrille().afficheTirs();
             joueur2.tir(joueur1.getGrille());
@@ -103,6 +103,7 @@ public class Jeu {
     /**
      * Demarre une nouvelle partie
      */
+
     public void demarre() {
         placement();
         tirs();
@@ -116,7 +117,7 @@ public class Jeu {
      * Methode executable qui lance une nouvelle partie
      *
      * @param args Les parametres de la ligne de commande. S'il y en a, ils seront utilises
-     * comme nom pour les joueurs
+     *             comme nom pour les joueurs
      */
     public static void main(String[] args) {
         Jeu jeu = new Jeu(args);
