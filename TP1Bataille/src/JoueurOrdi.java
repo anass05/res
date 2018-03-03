@@ -1,7 +1,9 @@
 import java.util.Random;
 
 /**
- * Created by Anass on 2018-02-20.
+ * Classe JoueurOrdi qui hérite de la classe Joueur
+ *
+ * @author Anass
  */
 public class JoueurOrdi extends Joueur {
 
@@ -12,6 +14,11 @@ public class JoueurOrdi extends Joueur {
         super("Ordinateur");
     }
 
+
+    /**
+     * a voire {@link Joueur#placementBateaux()}.
+     */
+
     public void placementBateaux() {
         for (int i = 0; i < NB_CROISEURS; i++)
             ajouterUnBateau('C');
@@ -21,11 +28,15 @@ public class JoueurOrdi extends Joueur {
             ajouterUnBateau('P');
     }
 
+
+    /**
+     * a voire {@link Joueur#ajouterUnBateau(char)} ()}.
+     */
     public void ajouterUnBateau(char symbole) {
-        int x, y;
-        boolean placerSuccess;
-        boolean orientation;
+        boolean intersection;
         do {
+            int x, y;
+            boolean orientation;
             x = new Random().nextInt(9);
             y = new Random().nextInt(9);
             orientation = new Random().nextBoolean();
@@ -36,13 +47,21 @@ public class JoueurOrdi extends Joueur {
                 b = new Destroyeur();
             if (symbole == 'P')
                 b = new PorteAvions();
+
             b.horizontal = orientation;
-            placerSuccess = grille.place(b, x, y);
-            bateaux.add(b);
-        } while (!placerSuccess);
+            intersection = grille.testIntersection(b, x, y);
+            if (!intersection) {
+                grille.place(b, x, y);
+                bateaux.add(b);
+            }
+        } while (intersection);
 
     }
 
+
+    /**
+     * a voire {@link Joueur#tir(Grille)}.
+     */
     @Override
     public void tir(Grille grilleAdversaire) {
 

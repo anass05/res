@@ -42,11 +42,17 @@ public class Case {
         this.etat = etat;
     }
 
+    /**
+     * methode qui renvoie le bateau dans la case
+     */
 
     public Bateau getBateau() {
         return bateau;
     }
 
+    /**
+     * methode qui definie le bateau
+     */
     public void setBateau(Bateau bateau) {
         this.bateau = bateau;
     }

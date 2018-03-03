@@ -1,22 +1,38 @@
 import java.util.ArrayList;
 
 /**
- * Created by Anass on 2018-02-20.
+ * La classe qui represente un bateau
+ *
+ * @author Anass
  */
 public abstract class Bateau {
+    /**
+     * Le bateau est définie par une taille des cases et une orientation
+     */
     private int taille;
     private ArrayList<Case> cases;
     public boolean horizontal;
 
+    /**
+     * Constructeur par defaut du bateau
+     *
+     * @param taille: la taille du bateau
+     */
     public Bateau(int taille) {
         this.taille = taille;
         this.cases = new ArrayList<>();
     }
 
+    /**
+     * methode qui renvoie la taille du bateau
+     */
     public int getTaille() {
         return taille;
     }
 
+    /**
+     * methode qui renvoie un boolean true si le bateau est écoulé
+     */
     public boolean estCoule() {
         for (Case c : cases) {
             if (!c.isEtat())
@@ -25,18 +41,32 @@ public abstract class Bateau {
         return true;
     }
 
+    /**
+     * methode qui ajoute une case au bateau
+     *
+     * @param c: la case a ajouter
+     */
     public void ajouteCase(Case c) {
         c.setBateau(this);
         cases.add(c);
     }
 
+    /**
+     * la methode qui renvoie la liste des cases du bateau
+     */
     public ArrayList<Case> getCases() {
         return cases;
     }
 
+    /**
+     * la methode qui definie les case du bateau
+     */
     public void setCases(ArrayList<Case> cases) {
         this.cases = cases;
     }
 
+    /**
+     * la methode abstraite qui renvoie le symbole d u beateu
+     */
     public abstract String getSymbole();
 }

@@ -50,35 +50,80 @@ public class Grille {
         grille[x][y].setEtat(true);
     }
 
-    public Case[][] getGrille() {
-        return grille;
-    }
-
+    /**
+     * methode place qui sert a placer un bateau dans la grille
+     *
+     * @param b: le bateau à ajouter dans la grille
+     * @param x: la position x du bateau
+     * @param y: la position y du bateau
+     */
     public boolean place(Bateau b, int x, int y) {
         boolean isHorizontal;
         isHorizontal = b.horizontal;
         int taille = b.getTaille();
         //clearing old cases from the old position
-        for (Case c : b.getCases())
-            c.setBateau(null);
+        removeBateau(b);
 //        //creating new cases for the new postition
         b.setCases(new ArrayList<>());
         if (isHorizontal && ((taille + x) < grille[y].length)) {
             for (int i = 0; i < taille; i++) {
-                b.ajouteCase(grille[y][x+i]);
+                b.ajouteCase(grille[y][x + i]);
             }
             return true;
         }
         if (!isHorizontal && ((taille + y) < grille.length)) {
             for (int i = 0; i < taille; i++) {
-                b.ajouteCase(grille[y+i][x]);
-                //System.out.println("["+(y+i)+"]["+x+"]");
+                b.ajouteCase(grille[y + i][x]);
             }
             return true;
         }
         return false;
     }
 
+    /**
+     * methode qui test l'intersection des bateau
+     *
+     * @param b: le bateau à ajouter dans la grille
+     * @param x: la position x du bateau
+     * @param y: la position y du bateau
+     */
+    public boolean testIntersection(Bateau b, int x, int y) {
+
+        boolean isHorizontal;
+        isHorizontal = b.horizontal;
+        int taille = b.getTaille();
+
+        if (isHorizontal && ((taille + x) < grille[y].length)) {
+            for (int i = 0; i < taille; i++) {
+                if (grille[y][x + i].getBateau() != null)
+                    return true;
+            }
+            return false;
+        }
+        if (!isHorizontal && ((taille + y) < grille.length)) {
+            for (int i = 0; i < taille; i++) {
+                if (grille[y + i][x].getBateau() != null)
+                    return true;
+            }
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * methode qui sert a suprimer un bateau de la grille
+     *
+     * @param b: le bateau a supprimer
+     */
+    public void removeBateau(Bateau b) {
+        for (Case c : b.getCases())
+            c.setBateau(null);
+        b.setCases(new ArrayList<>());
+    }
+
+    /**
+     * methode qui affiche la grille
+     */
     public void affiche() {
         for (int i = 0; i < grille.length; i++) {
             for (int j = 0; j < grille[i].length; j++) {
