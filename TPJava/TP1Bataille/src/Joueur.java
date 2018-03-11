@@ -85,21 +85,25 @@ public class Joueur {
             if (symbole == 'P')
                 b = new PorteAvions();
             b.horizontal = orientation;
-            intersection = grille.testIntersection(b, x, y);
-            if (!intersection) {
+            intersection = true;
+            try {
                 grille.place(b, x, y);
+                intersection = false;
                 bateaux.add(b);
-            } else {
-                System.out.println("intersection entre bateaux détécté!");
-                System.out.println("saisire une autre position");
+            } catch (ToutesCasesAffecteesException e) {
+                e.printStackTrace();
+            } catch (BateauHorsGrilleException e) {
+                e.printStackTrace();
+            } catch (CaseOccupeeException e) {
+                e.printStackTrace();
             }
         } while (intersection);
-
     }
 
     /**
      * methode retourne true si le joueur a perdu
      */
+
     public boolean aPerdu() {
         for (Bateau b : bateaux)
             if (!b.estCoule())
@@ -129,14 +133,36 @@ public class Joueur {
     }
 
     /**
+     * methode qui sert a saisire un postion de tir
+     */
+    public int positionTir() throws TireSurCaseInexistanteException {
+        Scanner sc = new Scanner(System.in);
+        int pos = -1;
+        while (pos == -1) {
+            pos = sc.nextInt();
+            if ((pos < 0) || (pos > 9)) {
+                throw new TireSurCaseInexistanteException();
+            }
+        }
+        return pos;
+    }
+
+    /**
      * methode tir
      *
      * @param grilleAdversaire: la grille de l'enemy
      */
     public void tir(Grille grilleAdversaire) {
         System.out.println("Indiquez les coordonnees du tir (x puis y) entre 0 et 9");
-        int x = saisiePosition();
-        int y = saisiePosition();
-        grilleAdversaire.tir(x, y);
+        int x;
+        int y;
+        try {
+            x = positionTir();
+            y = positionTir();
+            grilleAdversaire.tir(x, y);
+        } catch (TireSurCaseInexistanteException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 }

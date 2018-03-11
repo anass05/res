@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * La classe qui represente un bateau
@@ -10,7 +10,7 @@ public abstract class Bateau {
      * Le bateau est définie par une taille des cases et une orientation
      */
     private int taille;
-    private ArrayList<Case> cases;
+    private HashSet<Case> cases;
     public boolean horizontal;
 
     /**
@@ -20,7 +20,7 @@ public abstract class Bateau {
      */
     public Bateau(int taille) {
         this.taille = taille;
-        this.cases = new ArrayList<>();
+        this.cases = new HashSet<>();
     }
 
     /**
@@ -45,8 +45,11 @@ public abstract class Bateau {
      * methode qui ajoute une case au bateau
      *
      * @param c: la case a ajouter
+     * @throws ToutesCasesAffecteesException si toutes les cases du bateau on ete assignee
      */
-    public void ajouteCase(Case c) {
+    public void ajouteCase(Case c) throws ToutesCasesAffecteesException {
+        if (cases.size() == taille)
+            throw new ToutesCasesAffecteesException();
         c.setBateau(this);
         cases.add(c);
     }
@@ -54,14 +57,14 @@ public abstract class Bateau {
     /**
      * la methode qui renvoie la liste des cases du bateau
      */
-    public ArrayList<Case> getCases() {
+    public HashSet<Case> getCases() {
         return cases;
     }
 
     /**
      * la methode qui definie les case du bateau
      */
-    public void setCases(ArrayList<Case> cases) {
+    public void setCases(HashSet<Case> cases) {
         this.cases = cases;
     }
 

@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Cette classe represente la Grille de bataille
@@ -57,27 +57,33 @@ public class Grille {
      * @param x: la position x du bateau
      * @param y: la position y du bateau
      */
-    public boolean place(Bateau b, int x, int y) {
+    public void place(Bateau b, int x, int y) throws BateauHorsGrilleException, ToutesCasesAffecteesException, CaseOccupeeException {
         boolean isHorizontal;
         isHorizontal = b.horizontal;
         int taille = b.getTaille();
-        //clearing old cases from the old position
         removeBateau(b);
-//        //creating new cases for the new postition
-        b.setCases(new ArrayList<>());
-        if (isHorizontal && ((taille + x) < grille[y].length)) {
-            for (int i = 0; i < taille; i++) {
-                b.ajouteCase(grille[y][x + i]);
-            }
-            return true;
-        }
-        if (!isHorizontal && ((taille + y) < grille.length)) {
-            for (int i = 0; i < taille; i++) {
-                b.ajouteCase(grille[y + i][x]);
-            }
-            return true;
-        }
-        return false;
+        b.setCases(new HashSet<>());
+        if (isHorizontal)
+            if ((taille + x) < grille[y].length) {
+                for (int i = 0; i < taille; i++) {
+                    if (grille[y][x + i].getBateau() != null)
+                        throw new CaseOccupeeException();
+                    else
+                        b.ajouteCase(grille[y][x + i]);
+                }
+            } else
+                throw new BateauHorsGrilleException();
+        if (!isHorizontal)
+            if ((taille + y) < grille.length) {
+                for (int i = 0; i < taille; i++) {
+                    if (grille[y + i][x].getBateau() != null)
+                        throw new CaseOccupeeException();
+                    else
+                        b.ajouteCase(grille[y + i][x]);
+                }
+            } else
+                throw new BateauHorsGrilleException();
+
     }
 
     /**
@@ -87,28 +93,29 @@ public class Grille {
      * @param x: la position x du bateau
      * @param y: la position y du bateau
      */
-    public boolean testIntersection(Bateau b, int x, int y) {
-
-        boolean isHorizontal;
-        isHorizontal = b.horizontal;
-        int taille = b.getTaille();
-
-        if (isHorizontal && ((taille + x) < grille[y].length)) {
-            for (int i = 0; i < taille; i++) {
-                if (grille[y][x + i].getBateau() != null)
-                    return true;
-            }
-            return false;
-        }
-        if (!isHorizontal && ((taille + y) < grille.length)) {
-            for (int i = 0; i < taille; i++) {
-                if (grille[y + i][x].getBateau() != null)
-                    return true;
-            }
-            return false;
-        }
-        return true;
-    }
+//    public boolean testIntersection(Bateau b, int x, int y) {
+//
+//        boolean isHorizontal;
+//        isHorizontal = b.horizontal;
+//        int taille = b.getTaille();
+//
+//        if (isHorizontal && ((taille + x) < grille[y].length)) {
+//            for (int i = 0; i < taille; i++) {
+//                if (grille[y][x + i].getBateau() != null)
+//                    return true;
+//            }
+//            return false;
+//        }
+//
+//        if (!isHorizontal && ((taille + y) < grille.length)) {
+//            for (int i = 0; i < taille; i++) {
+//                if (grille[y + i][x].getBateau() != null)
+//                    return true;
+//            }
+//            return false;
+//        }
+//        return true;
+//    }
 
     /**
      * methode qui sert a suprimer un bateau de la grille
@@ -118,7 +125,7 @@ public class Grille {
     public void removeBateau(Bateau b) {
         for (Case c : b.getCases())
             c.setBateau(null);
-        b.setCases(new ArrayList<>());
+        b.setCases(new HashSet<>());
     }
 
     /**

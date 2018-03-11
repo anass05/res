@@ -49,11 +49,18 @@ public class JoueurOrdi extends Joueur {
                 b = new PorteAvions();
 
             b.horizontal = orientation;
-            intersection = grille.testIntersection(b, x, y);
-            if (!intersection) {
+            intersection = true;
+            try {
                 grille.place(b, x, y);
-                bateaux.add(b);
+                intersection = false;
+            } catch (ToutesCasesAffecteesException e) {
+                e.printStackTrace();
+            } catch (BateauHorsGrilleException e) {
+                e.printStackTrace();
+            } catch (CaseOccupeeException e) {
+                e.printStackTrace();
             }
+            bateaux.add(b);
         } while (intersection);
 
     }
