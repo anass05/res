@@ -37,13 +37,16 @@ public class RecuitSimule {
         courante.sommets = new ArrayList<>(graphe.sommets);
         meilleur.sommets = new ArrayList<>(graphe.sommets);
 
-        while (temperature > 1) {
-            try {
-                Thread.sleep(5);
-                ui.updates(meilleur);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        while (temperature > 0) {
+//            try {
+//                Thread.sleep(5);
+
+            ui.updates(meilleur);
+            String ms[] = {"temperature: " + temperature, "cout: " + min};
+            ui.updated(ms);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
 
             System.out.println(temperature + ") best yet = " + min);
             //3)

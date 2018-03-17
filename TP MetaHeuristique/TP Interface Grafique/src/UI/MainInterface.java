@@ -14,6 +14,7 @@ public class MainInterface extends JPanel {
     private Graphe graphe;
     private Graphe dots;
     private String[] messages;
+    private double t0, t;
 
     public MainInterface(Graphe graphe) {
         this.graphe = new Graphe();
@@ -32,6 +33,10 @@ public class MainInterface extends JPanel {
     public void updates(ArrayList<Sommet> sommets) {
         this.graphe.sommets = new ArrayList<>(sommets);
         repaint();
+    }
+
+    public void startTimer() {
+        this.t0 = System.currentTimeMillis();
     }
 
     @Override
@@ -77,7 +82,11 @@ public class MainInterface extends JPanel {
         } catch (ArrayIndexOutOfBoundsException e) {
 
         }
-
+        t = System.currentTimeMillis();
+        if (t - t0 > 1000)
+            g.drawString("temps: "+(t - t0) / 1000 + " s", 450, 20);
+        else
+            g.drawString("temps: "+(t - t0)+ " ms", 450, 20);
     }
 
     public void updated(String[] message) {

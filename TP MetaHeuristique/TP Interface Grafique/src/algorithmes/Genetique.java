@@ -83,7 +83,7 @@ public class Genetique {
                 e.printStackTrace();
             }
 
-            System.out.println(i + ") " + min);
+//            System.out.println(i + ") " + min);
 
         }
 
@@ -94,7 +94,7 @@ public class Genetique {
 
         Collections.sort(population, new CoutComparator());
         Collections.sort(newGeneration, new CoutComparator());
-        System.out.println(population);
+//        System.out.println(population);
 
         int n = population.size();
         for (int i = n; i > n / 2; i--) {

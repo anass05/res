@@ -24,19 +24,24 @@ public class Descente {
         //4) repeat
         try {
             Thread.sleep(50);
-            ui.updates(graphe);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("best so far " + graphe.cout());
+        ui.updates(graphe);
+        String[] ms = {"cout: " + graphe.cout()};
+        ui.updated(ms);
+
         ArrayList<Graphe> graphes = new ArrayList<>();
-        for (int i = 0; i < graphe.sommets.size() - 2; i++) {
-            Graphe g = new Graphe();
-            g.sommets = new ArrayList<>(graphe.sommets);
-            Sommet s = g.sommets.get(i);
-            g.sommets.set(i, graphe.sommets.get(i + 2));
-            g.sommets.set(i + 2, s);
-            graphes.add(g);
+
+        for (int i = 0; i < graphe.sommets.size() - 1; i++) {
+            for (int j = i; j < graphe.sommets.size(); j++) {
+                Graphe g = new Graphe();
+                g.sommets = new ArrayList<>(graphe.sommets);
+                Sommet s = g.sommets.get(i);
+                g.sommets.set(i, graphe.sommets.get(j));
+                g.sommets.set(j, s);
+                graphes.add(g);
+            }
         }
 
         double premierMin = graphe.cout();
@@ -51,8 +56,6 @@ public class Descente {
         }
         if (premierMin > currentMin)
             calcule(meilleur);
-        else
-            System.out.println("done best = " + currentMin);
     }
 }
 
