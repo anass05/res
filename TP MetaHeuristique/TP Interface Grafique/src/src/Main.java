@@ -9,6 +9,7 @@ import objects.Graphe;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Created by Anass on 2018-03-13.
@@ -31,13 +32,13 @@ public class Main {
         frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
         frame.setVisible(true);
 
-        g.sommets = new DataLoader().readFile("medium.in");
+        g.sommets = new DataLoader().readFile("large.in");
         ui.updates(g);
         ui.startTimer();
 //        new Descente(ui).calcule(g);
-        new Tabou(ui).calcule(g);
+//        new Tabou(ui).calcule(g);
 //        new RecuitSimule(ui).calcule(g);
-//        new Genetique(g,ui).calcule();
+        new Genetique(g,ui).calcule();
     }
 
 

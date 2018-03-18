@@ -12,7 +12,7 @@ import java.util.Random;
  */
 public class RecuitSimule {
     public static final int MAX_TEMPERTAURE = 10000;
-    public static final int DECRESING_VALUE = 1;
+    public static final double DECRESING_VALUE = 0.1;
 
     private MainInterface ui;
 
@@ -30,7 +30,7 @@ public class RecuitSimule {
 //                  6. Mettre à jour T;
 //        7. Fin du tant que
 
-        int temperature = MAX_TEMPERTAURE;
+        double temperature = MAX_TEMPERTAURE;
         double min = 100000;
         Graphe courante = new Graphe();
         Graphe meilleur = new Graphe();
@@ -48,22 +48,29 @@ public class RecuitSimule {
 //                e.printStackTrace();
 //            }
 
-            System.out.println(temperature + ") best yet = " + min);
+//            System.out.println(temperature + ") best yet = " + min);
             //3)
+            //Graphe s = new Graphe();
+            //s.sommets = new ArrayList<>(courante.sommets);
+
+            ArrayList<Graphe> graphes = new ArrayList<>();
+            for (int i = 0; i < courante.sommets.size() - 1; i++) {
+                for (int j = i; j < courante.sommets.size(); j++) {
+                    Graphe g = new Graphe();
+                    g.sommets = new ArrayList<>(courante.sommets);
+                    Sommet som = g.sommets.get(i);
+                    g.sommets.set(i, courante.sommets.get(j));
+                    g.sommets.set(j, som);
+                    graphes.add(g);
+                }
+            }
             Graphe s = new Graphe();
-            s.sommets = new ArrayList<>(courante.sommets);
-            Random random = new Random();
-            int n1 = random.nextInt(s.sommets.size());
-            int n2 = random.nextInt(s.sommets.size());
-            Sommet sommet = s.sommets.get(n1);
-            s.sommets.set(n1, s.sommets.get(n2));
-            s.sommets.set(n2, sommet);
-            System.out.println(s);
+            s.sommets = new ArrayList<>(graphes.get(new Random().nextInt(graphes.size())).sommets);
             //5)
-            double r = 1 / ((double) random.nextInt(1000) + 1);
+            double r = 1 / ((double) new Random().nextInt(10) + 1);
 
             //6)
-            double P = Math.exp((s.cout() - courante.cout()) / (double) temperature);
+            double P = Math.exp((courante.cout() - s.cout()) / temperature);
             if (P > r) {
                 courante.sommets = new ArrayList<>(s.sommets);
             }

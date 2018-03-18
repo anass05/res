@@ -13,9 +13,9 @@ public class CoutComparator implements Comparator {
         Graphe g1 = (Graphe) o1;
         Graphe g2 = (Graphe) o2;
         if (g1.cout() > g2.cout())
-            return 1;
-        if (g1.cout() < g2.cout())
             return -1;
+        if (g1.cout() < g2.cout())
+            return 1;
         return 0;
     }
 }

@@ -5,80 +5,86 @@ import objects.Graphe;
 import objects.Sommet;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by Anass on 2018-03-15.
  */
 public class Tabou {
-    public static final int MAX_ITERATIONS = 1000;
+    public static final int MAX_ITERATIONS = 100;
     public ArrayList<Graphe> tabou;
-    private double min = 1000000;
+    private double best_min = 1000000;
     private MainInterface ui;
+    private Graphe best;
 
     public Tabou(MainInterface ui) {
         this.tabou = new ArrayList<>();
         this.ui = ui;
+        this.best = new Graphe();
     }
-
 
     public void calcule(Graphe graphe) {
-        //1) choisir un solution initial s*=s0
-        //2) choisir une solution s dans le voisinage de s* n'appartient pas a tabou
-        //3) si f(s) < f(s*) => s* = s
-        //4) mettre a jour tabou
-        //5) go to 2)
-        min = graphe.cout();
-        int current = 0;
-        Graphe s_ = new Graphe();
-        s_.sommets = new ArrayList<>(graphe.sommets);
-
-        while (current < MAX_ITERATIONS) {
-//            try {
-//                Thread.sleep(0);
-            ui.updates(s_);
-            String[] ms = {"cout = "+min,"while( "+current+" ) < "+MAX_ITERATIONS};
-            ui.updated(ms);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-            System.out.println(current + ") best yet = " + min);
-            //2)
-            Random r = new Random();
-            int n1 = 0;
-            int n2 = 0;
-            while (n1 == n2) {
-                n1 = r.nextInt(s_.sommets.size());
-                n2 = r.nextInt(s_.sommets.size());
-            }
-
-
-            Graphe s = new Graphe();
-            s.sommets = new ArrayList<>(s_.sommets);
-            Sommet sommet = s.sommets.get(n1);
-            s.sommets.set(n1, s.sommets.get(n2));
-            s.sommets.set(n2, sommet);
-
-
-            for (int i = tabou.size() - 1; i >= 0; i--) {
-                Graphe g = tabou.get(i);
-                if (g.equals(s))
-                    break;
-            }
-
-            //3)
-            if (s.cout() < s_.cout()) {
-                s_.sommets = new ArrayList<>(s.sommets);
-                if (s.cout() < min) {
-                    min = s.cout();
-                    System.out.println("better one found " + min);
-                }
-                current = -1;
-            }
-            //4)
-            tabou.add(s);
-            current++;
-        }
+        calcule(graphe, 0);
+        this.best.sommets = new ArrayList<>(graphe.sommets);
     }
 
+
+    public void calcule(Graphe graphe, int current_itteration) {
+
+//        try {
+//            Thread.sleep(50);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        ui.updates(this.best);
+        String[] ms = {"cout: " + best_min, "itteration: " + current_itteration, "MAX_ITERATIONS: " + MAX_ITERATIONS};
+        ui.updated(ms);
+
+        ArrayList<Graphe> graphes = new ArrayList<>();
+        for (int i = 0; i < graphe.sommets.size() - 1; i++) {
+            for (int j = i; j < graphe.sommets.size(); j++) {
+                Graphe g = new Graphe();
+                g.sommets = new ArrayList<>(graphe.sommets);
+                Sommet s = g.sommets.get(i);
+                g.sommets.set(i, graphe.sommets.get(j));
+                g.sommets.set(j, s);
+                graphes.add(g);
+            }
+        }
+
+        double currentMin = graphe.cout();
+        Graphe meilleur = graphe;
+        for (Graphe gg : graphes) {
+            double temp = gg.cout();
+            if (temp < currentMin) {
+                currentMin = temp;
+                meilleur = gg;
+            }
+        }
+        //meilleur = la solution qui minimise f(s’) dans N(s)
+        if (meilleur.cout() < best_min) {
+            best_min = meilleur.cout();
+            graphe.sommets = new ArrayList<>(meilleur.sommets);
+            this.best.sommets = new ArrayList<>(meilleur.sommets);
+            current_itteration = 0;
+        } else {
+            graphe.shuffle();
+            current_itteration++;
+        }
+
+        for (int i = tabou.size() - 1; i >= 0; i--) {
+            if (tabou.get(i).equals(graphe)) {
+                graphe.shuffle();
+                i = tabou.size() - 1;
+                if (current_itteration >= MAX_ITERATIONS)
+                    return;
+            }
+        }
+
+        Graphe tabouEntry = new Graphe();
+        tabouEntry.sommets = new ArrayList<>(meilleur.sommets);
+        tabou.add(tabouEntry);
+        if (current_itteration < MAX_ITERATIONS)
+            calcule(graphe, ++current_itteration);
+
+    }
 }

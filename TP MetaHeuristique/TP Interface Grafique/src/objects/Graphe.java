@@ -1,9 +1,9 @@
 package objects;
 
 import UI.MainInterface;
-import src.Main;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by Anass on 2018-03-13.
@@ -22,7 +22,7 @@ public class Graphe {
         arrangedSommets.add(sommets.get(0));
         double min = 100000;
         Sommet mini = null;
-        for (int j = 0; j < sommets.size()-1; j++) {
+        for (int j = 0; j < sommets.size() - 1; j++) {
             for (int i = 0; i < sommets.size(); i++) {
                 Sommet s = sommets.get(i);
                 if (!s.equals(arrangedSommets.get(j)) && matriceDistance().get(j).get(i) < min) {
@@ -60,19 +60,19 @@ public class Graphe {
         return s;
     }
 
-    public double cout(){
+    public double cout() {
         double cout = 0;
-        for (int i = 0; i < sommets.size()-1; i++) {
-            cout += matriceDistance().get(i).get(i+1);
+        for (int i = 0; i < sommets.size() - 1; i++) {
+            cout += matriceDistance().get(i).get(i + 1);
         }
-        cout += matriceDistance().get(0).get(sommets.size()-1);
+        cout += matriceDistance().get(0).get(sommets.size() - 1);
         return cout;
     }
 
     @Override
     public boolean equals(Object obj) {
         for (int i = 0; i < sommets.size(); i++) {
-            if(!((Graphe) obj).sommets.get(i).equals(sommets.get(i)))
+            if (!((Graphe) obj).sommets.get(i).equals(sommets.get(i)))
                 return false;
         }
         return true;
@@ -88,6 +88,22 @@ public class Graphe {
             matrice.add(row);
         }
         return matrice;
+    }
+
+    public void shuffle() {
+        int done = sommets.size()/2;
+        while (done > 0) {
+            Random r = new Random();
+            int n1, n2;
+            do {
+                n1 = r.nextInt(sommets.size());
+                n2 = r.nextInt(sommets.size());
+            } while (n1 == n2);
+            Sommet s = sommets.get(n1);
+            sommets.set(n1, sommets.get(n2));
+            sommets.set(n2, s);
+            done--;
+        }
     }
 }
 

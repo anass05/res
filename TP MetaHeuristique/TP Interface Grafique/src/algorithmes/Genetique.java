@@ -13,8 +13,9 @@ import java.util.Random;
  * Created by Anass on 2018-03-16.
  */
 public class Genetique {
-    public static final int GENERATION_COUNT = 300;
-    public static final int POPULATION_SIZE = 20;
+    public static final int GENERATION_COUNT = 100;
+    public static final int POPULATION_SIZE = 400;
+    public static final double MUTATION_RATE = 1;
     private ArrayList<Graphe> population;
     private ArrayList<Graphe> newGeneration;
     private MainInterface ui;
@@ -25,33 +26,57 @@ public class Genetique {
         population = new ArrayList<>();
         newGeneration = new ArrayList<>();
         this.ui = ui;
-        for (int i = 0; i < POPULATION_SIZE; i++) {
-            Graphe s = new Graphe();
-            s.sommets = new ArrayList<>(graphe.sommets);
-            Random r = new Random();
-            int n1, n2;
-            do {
-                n2 = r.nextInt(s.sommets.size());
-                n1 = r.nextInt(s.sommets.size());
-            } while (n1 == n2);
-            Sommet sommet = s.sommets.get(n1);
-            s.sommets.set(n1, s.sommets.get(n2));
-            s.sommets.set(n2, sommet);
-            population.add(s);
+
+        ArrayList<Graphe> graphes = new ArrayList<>();
+
+        for (int i = 0; i < graphe.sommets.size() - 1; i++) {
+            for (int j = i; j < graphe.sommets.size(); j++) {
+                Graphe gg = new Graphe();
+                gg.sommets = new ArrayList<>(graphe.sommets);
+                Sommet s = gg.sommets.get(i);
+                gg.sommets.set(i, graphe.sommets.get(j));
+                gg.sommets.set(j, s);
+                graphes.add(gg);
+            }
         }
+        for (int i = 0; i < POPULATION_SIZE; i++) {
+            population.add(graphes.get(new Random().nextInt(graphes.size())));
+        }
+
+        for (int i = 0; i < POPULATION_SIZE; i++) {
+            newGeneration.add(graphes.get(new Random().nextInt(graphes.size())));
+        }
+
 //        for (int i = 0; i < POPULATION_SIZE; i++) {
 //            Graphe s = new Graphe();
 //            s.sommets = new ArrayList<>(graphe.sommets);
 //            Random r = new Random();
-//            int n1 = r.nextInt(s.sommets.size());
-//            int n2 = r.nextInt(s.sommets.size());
+//            int n1, n2;
+//            do {
+//                n2 = r.nextInt(s.sommets.size());
+//                n1 = r.nextInt(s.sommets.size());
+//            } while (n1 == n2);
+//            Sommet sommet = s.sommets.get(n1);
+//            s.sommets.set(n1, s.sommets.get(n2));
+//            s.sommets.set(n2, sommet);
+//            population.add(s);
+//        }
+//        for (int i = 0; i < POPULATION_SIZE; i++) {
+//            Graphe s = new Graphe();
+//            s.sommets = new ArrayList<>(graphe.sommets);
+//            Random r = new Random();
+//            int n1, n2;
+//            do {
+//                n2 = r.nextInt(s.sommets.size());
+//                n1 = r.nextInt(s.sommets.size());
+//            } while (n1 == n2);
 //            Sommet sommet = s.sommets.get(n1);
 //            s.sommets.set(n1, s.sommets.get(n2));
 //            s.sommets.set(n2, sommet);
 //            newGeneration.add(s);
 //
 //        }
-        newGeneration = new ArrayList<>(population);
+//        newGeneration = new ArrayList<>(population);
 
     }
 
@@ -91,7 +116,7 @@ public class Genetique {
     }
 
     public void selection() {
-
+//        System.out.println(population);
         Collections.sort(population, new CoutComparator());
         Collections.sort(newGeneration, new CoutComparator());
 //        System.out.println(population);
@@ -112,19 +137,20 @@ public class Genetique {
 
     public void mutation() {
         for (int i = 0; i < population.size(); i++) {
-            Graphe s = population.get(i);
-            s.sommets = new ArrayList<>(s.sommets);
-            Random r = new Random();
-            int n1, n2;
-            do {
-                n2 = r.nextInt(population.get(0).sommets.size());
-                n1 = r.nextInt(population.get(0).sommets.size());
-            } while (n1 == n2);
-
-            Sommet sommet = s.sommets.get(n1);
-            s.sommets.set(n1, s.sommets.get(n2));
-            s.sommets.set(n2, sommet);
-            population.set(i, s);
+            if (Math.random() < MUTATION_RATE) {
+                Graphe s = population.get(i);
+                s.sommets = new ArrayList<>(s.sommets);
+                Random r = new Random();
+                int n1, n2;
+                do {
+                    n2 = r.nextInt(population.get(0).sommets.size());
+                    n1 = r.nextInt(population.get(0).sommets.size());
+                } while (n1 == n2);
+                Sommet sommet = s.sommets.get(n1);
+                s.sommets.set(n1, s.sommets.get(n2));
+                s.sommets.set(n2, sommet);
+                population.set(i, s);
+            }
         }
     }
 
@@ -211,6 +237,7 @@ public class Genetique {
                 a1.addAll(a3);
                 kid.sommets = new ArrayList<>(a1);
                 newGeneration.add(kid);
+//                System.out.println(kid);
             }
             isFirst = false;
         }

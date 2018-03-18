@@ -22,19 +22,20 @@ public class Descente {
         //2) 2-opt
         //3) trouver la bonne solution
         //4) repeat
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(50);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         ui.updates(graphe);
         String[] ms = {"cout: " + graphe.cout()};
         ui.updated(ms);
-
+        System.out.println("running");
         ArrayList<Graphe> graphes = new ArrayList<>();
 
         for (int i = 0; i < graphe.sommets.size() - 1; i++) {
             for (int j = i; j < graphe.sommets.size(); j++) {
+                System.out.println("mini running");
                 Graphe g = new Graphe();
                 g.sommets = new ArrayList<>(graphe.sommets);
                 Sommet s = g.sommets.get(i);
