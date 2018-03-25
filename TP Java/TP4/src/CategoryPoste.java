@@ -1,5 +1,7 @@
 /**
- * Created by Anass on 2018-03-20.
+ * enum des categories des postes
+ *
+ * @author Anass
  */
 public enum CategoryPoste {
     Directeur,

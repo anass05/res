@@ -2,19 +2,41 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Created by Anass on 2018-03-20.
+ * La classe société
+ *
+ * @author Anass
  */
+
 public class Societe {
+    /**
+     * Le directeur de la societe
+     */
     private Personne Directeur;
+    /**
+     * la liste de employees
+     */
     private ArrayList<Personne> employees;
+    /**
+     * le liste des postes
+     */
     private ArrayList<Poste> postes;
 
+    /**
+     * le constructeur de la classe societe
+     *
+     * @param directeur
+     * @param employees
+     * @param postes
+     */
     public Societe(Personne directeur, ArrayList<Personne> employees, ArrayList<Poste> postes) {
         Directeur = directeur;
         this.employees = employees;
         this.postes = postes;
     }
 
+    /**
+     * la methode qui calcule la somme des salaires de la sociétés
+     */
     public double getMasseSalariele() {
         double mass = 0;
         for (Poste p : postes)
@@ -22,6 +44,10 @@ public class Societe {
         return mass;
     }
 
+    /**
+     * la methode qui affiche les informations des salariés (Nom, prénom)
+     * suivant leur catégorie et en ordre croissant de leur salaire. 2
+     */
     public void afficheSalarie() {
         ArrayList<Poste> directeurs = new ArrayList<>();
         ArrayList<Poste> cadres = new ArrayList<>();
@@ -53,6 +79,9 @@ public class Societe {
             System.out.println(p.getPersonne().getNom() + " " + p.getPersonne().getPrenom());
     }
 
+    /**
+     * le getters
+     */
     public Personne getDirecteur() {
         return Directeur;
     }

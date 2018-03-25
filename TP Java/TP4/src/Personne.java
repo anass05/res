@@ -2,23 +2,70 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
- * Created by Anass on 2018-03-20.
+ * La classe personne qui represente une personne
+ *
+ * @author Anass
  */
 public class Personne {
+    /**
+     * Le nom de la personne
+     */
     private String nom;
+    /**
+     * Le prenom de la personne
+     */
     private String prenom;
+    /**
+     * la date de naissance de la personne
+     */
     private Calendar date_Naissance;
+    /**
+     * le genre de la personne
+     */
     private Genre genre;
+    /**
+     * le pere de la personne
+     */
     private Personne pere;
+    /**
+     * le mere de la personne
+     */
     private Personne mere;
+    /**
+     * le femme de la personne
+     */
     private Personne femme;
+    /**
+     * le meri de la personne
+     */
     private Personne mari;
+    /**
+     * le enfants de la personne
+     */
     private ArrayList<Personne> enfants;
+    /**
+     * le société oû cette personne travaille comme directeur
+     */
     private ArrayList<Societe> directeurDeSocietes;
+    /**
+     * les société oû cette personne travaille
+     */
     private ArrayList<Societe> employeDansSocietes;
+    /**
+     * les postes qui occupe cette personne
+     */
     private ArrayList<Poste> postes;
-    private Compte compte;
 
+    /**
+     * Le constructeur de la classe personne
+     *
+     * @param nom
+     * @param prenom
+     * @param date_Naissance
+     * @param genre
+     * @param pere
+     * @param mere
+     */
     public Personne(String nom, String prenom, Calendar date_Naissance, Genre genre, Personne pere, Personne mere) {
         this.nom = nom;
         this.prenom = prenom;
@@ -28,16 +75,15 @@ public class Personne {
         enfants = new ArrayList<>();
     }
 
+    /**
+     * setter des attributs
+     */
     public void setDirecteurDeSocietes(ArrayList<Societe> directeurDeSocietes) {
         this.directeurDeSocietes = directeurDeSocietes;
     }
 
     public void setEmployeDansSocietes(ArrayList<Societe> employeDansSocietes) {
         this.employeDansSocietes = employeDansSocietes;
-    }
-
-    public void setCompte(Compte compte) {
-        this.compte = compte;
     }
 
     public void setNom(String nom) {
@@ -105,6 +151,9 @@ public class Personne {
         return prenom;
     }
 
+    /**
+     * methode qui calcule le revenue d'une personne
+     */
     public double revenue() {
         double revenue = 0;
         for (Poste p : postes)
@@ -112,6 +161,9 @@ public class Personne {
         return revenue;
     }
 
+    /**
+     * methode qui affiche l'etat civile d'une personne
+     */
     public void getEtatcivile() {
         StringBuffer s = new StringBuffer();
         s.append("nom :" + nom);

@@ -1,13 +1,38 @@
 /**
- * Created by Anass on 2018-03-20.
+ * Classe poste
+ *
+ * @author Anass
  */
 public class Poste {
+    /**
+     * le salaire brut du poste selon la category
+     */
     private double salaireBrut;
+    /**
+     * la category du poste
+     */
     private CategoryPoste category;
+    /**
+     * le compte associé poste
+     */
     private Compte compte;
+    /**
+     * le personne qui occupe le post
+     */
     private Personne personne;
+    /**
+     * le société ou le poste belongs
+     */
     private Societe societe;
 
+    /**
+     * le constructeur de la classe poste
+     *
+     * @param category
+     * @param compte
+     * @param societe
+     * @param personne
+     */
     public Poste(CategoryPoste category, Compte compte, Personne personne, Societe societe) {
         this.category = category;
         this.compte = compte;
@@ -21,6 +46,9 @@ public class Poste {
             salaireBrut = 3000;
     }
 
+    /**
+     * methode payer qui paye un eployée selon sont nombre d'enfant et sa category
+     */
     public void payer() {
         double ajouter = 0;
         if (category == CategoryPoste.Directeur)
@@ -34,6 +62,9 @@ public class Poste {
         compte.crediter(ajouter);
     }
 
+    /**
+     * le getters
+     */
     public double getSalaireBrut() {
         return salaireBrut;
     }

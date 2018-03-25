@@ -1,5 +1,6 @@
 /**
- * Created by Anass on 2018-03-20.
+ * L'enum qui definie un genre
+ * @author Anass
  */
 public enum Genre {
     HOMME,

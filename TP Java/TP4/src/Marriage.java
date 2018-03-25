@@ -1,19 +1,40 @@
 import java.util.Calendar;
 
 /**
- * Created by Anass on 2018-03-20.
+ * La classe association qui est un marriage
+ *
+ * @author Anass
  */
-public class Mariage {
+public class Marriage {
+    /**
+     * le marie
+     */
     private Personne marie;
+    /**
+     * la femme
+     */
     private Personne femme;
+    /**
+     * la date de marriage
+     */
     private Calendar date;
 
-    public Mariage(Personne marie, Personne femme, Calendar date) {
+    /**
+     * le constructeur de la claase mariage
+     *
+     * @param marie
+     * @param femme
+     * @param date
+     */
+    public Marriage(Personne marie, Personne femme, Calendar date) {
         this.marie = marie;
         this.femme = femme;
         this.date = date;
     }
 
+    /**
+     * les getters et le setters
+     */
     public Personne getMarie() {
         return marie;
     }
