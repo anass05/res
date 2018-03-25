@@ -3,6 +3,7 @@ package objects;
 import UI.MainInterface;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -10,44 +11,10 @@ import java.util.Random;
  */
 public class Graphe {
     public ArrayList<Sommet> sommets;
+    public static ArrayList<ArrayList<Double>> matriceDistance;
 
     public Graphe() {
         sommets = new ArrayList<>();
-    }
-
-    public void arrange(MainInterface ui) {
-        ArrayList<Sommet> arrangedSommets = new ArrayList<>();
-        ui.updates(this);
-        System.out.println(sommets.size());
-        arrangedSommets.add(sommets.get(0));
-        double min = 100000;
-        Sommet mini = null;
-        for (int j = 0; j < sommets.size() - 1; j++) {
-            for (int i = 0; i < sommets.size(); i++) {
-                Sommet s = sommets.get(i);
-                if (!s.equals(arrangedSommets.get(j)) && matriceDistance().get(j).get(i) < min) {
-                    boolean exists = false;
-                    for (Sommet ss : arrangedSommets)
-                        if (ss.equals(s)) {
-                            exists = true;
-                            break;
-                        }
-                    if (!exists) {
-                        min = matriceDistance().get(0).get(i);
-                        mini = sommets.get(i);
-                    }
-                }
-            }
-            arrangedSommets.add(mini);
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            ui.updates(arrangedSommets);
-        }
-        sommets = new ArrayList<>(arrangedSommets);
-        System.out.println(sommets.size());
     }
 
     @Override
@@ -63,9 +30,13 @@ public class Graphe {
     public double cout() {
         double cout = 0;
         for (int i = 0; i < sommets.size() - 1; i++) {
-            cout += matriceDistance().get(i).get(i + 1);
+            int index = Integer.parseInt(sommets.get(i).toString().split("s")[1]);
+            int indexNext = Integer.parseInt(sommets.get(i+1).toString().split("s")[1]);
+            cout += matriceDistance.get(index).get(indexNext);
         }
-        cout += matriceDistance().get(0).get(sommets.size() - 1);
+        int index = Integer.parseInt(sommets.get(0).toString().split("s")[1]);
+        int indexNext = Integer.parseInt(sommets.get(sommets.size() - 1).toString().split("s")[1]);
+        cout += matriceDistance.get(index).get(indexNext);
         return cout;
     }
 
@@ -78,32 +49,26 @@ public class Graphe {
         return true;
     }
 
-    public ArrayList<ArrayList<Double>> matriceDistance() {
-        ArrayList<ArrayList<Double>> matrice = new ArrayList<>();
-        for (Sommet s : sommets) {
-            ArrayList<Double> row = new ArrayList<>();
-            for (Sommet ss : sommets) {
-                row.add(s.distance(ss));
-            }
-            matrice.add(row);
-        }
-        return matrice;
-    }
 
     public void shuffle() {
-        int done = sommets.size()/2;
-        while (done > 0) {
-            Random r = new Random();
-            int n1, n2;
-            do {
-                n1 = r.nextInt(sommets.size());
-                n2 = r.nextInt(sommets.size());
-            } while (n1 == n2);
-            Sommet s = sommets.get(n1);
-            sommets.set(n1, sommets.get(n2));
-            sommets.set(n2, s);
-            done--;
-        }
+        Collections.shuffle(sommets);
+//        int done = sommets.size()/2;
+//        while (done > 0) {
+//            Random r = new Random();
+//            int n1, n2;
+//            do {
+//                n1 = r.nextInt(sommets.size());
+//                n2 = r.nextInt(sommets.size());
+//            } while (n1 == n2);
+//            Sommet s = sommets.get(n1);
+//            sommets.set(n1, sommets.get(n2));
+//            sommets.set(n2, s);
+//            done--;
+//        }
+    }
+
+    public double fitness(){
+        return 1/cout()*25*sommets.size();
     }
 }
 

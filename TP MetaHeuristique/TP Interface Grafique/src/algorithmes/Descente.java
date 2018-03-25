@@ -33,8 +33,8 @@ public class Descente {
         System.out.println("running");
         ArrayList<Graphe> graphes = new ArrayList<>();
 
-        for (int i = 0; i < graphe.sommets.size() - 1; i++) {
-            for (int j = i; j < graphe.sommets.size(); j++) {
+        for (int i = 0; i < graphe.sommets.size(); i++) {
+            for (int j = i + 1; j < graphe.sommets.size(); j++) {
                 System.out.println("mini running");
                 Graphe g = new Graphe();
                 g.sommets = new ArrayList<>(graphe.sommets);

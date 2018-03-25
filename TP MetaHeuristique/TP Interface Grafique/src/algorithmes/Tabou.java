@@ -40,8 +40,8 @@ public class Tabou {
         ui.updated(ms);
 
         ArrayList<Graphe> graphes = new ArrayList<>();
-        for (int i = 0; i < graphe.sommets.size() - 1; i++) {
-            for (int j = i; j < graphe.sommets.size(); j++) {
+        for (int i = 0; i < graphe.sommets.size(); i++) {
+            for (int j = i + 1; j < graphe.sommets.size(); j++) {
                 Graphe g = new Graphe();
                 g.sommets = new ArrayList<>(graphe.sommets);
                 Sommet s = g.sommets.get(i);
@@ -53,13 +53,18 @@ public class Tabou {
 
         double currentMin = graphe.cout();
         Graphe meilleur = graphe;
-        for (Graphe gg : graphes) {
+//        for (Graphe gg : graphes) {
+        for (int i = 0; i < graphes.size(); i++) {
+            Graphe gg = graphes.get(i);
             double temp = gg.cout();
             if (temp < currentMin) {
                 currentMin = temp;
                 meilleur = gg;
             }
         }
+//        }
+//        Collections.sort(graphes,new CoutComparator());
+//        Graphe meilleur = graphes.get(0);
         //meilleur = la solution qui minimise f(s’) dans N(s)
         if (meilleur.cout() < best_min) {
             best_min = meilleur.cout();

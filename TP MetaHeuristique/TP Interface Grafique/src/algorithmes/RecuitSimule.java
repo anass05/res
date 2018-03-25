@@ -54,8 +54,8 @@ public class RecuitSimule {
             //s.sommets = new ArrayList<>(courante.sommets);
 
             ArrayList<Graphe> graphes = new ArrayList<>();
-            for (int i = 0; i < courante.sommets.size() - 1; i++) {
-                for (int j = i; j < courante.sommets.size(); j++) {
+            for (int i = 0; i < graphe.sommets.size(); i++) {
+                for (int j = i + 1; j < graphe.sommets.size(); j++) {
                     Graphe g = new Graphe();
                     g.sommets = new ArrayList<>(courante.sommets);
                     Sommet som = g.sommets.get(i);
@@ -67,11 +67,11 @@ public class RecuitSimule {
             Graphe s = new Graphe();
             s.sommets = new ArrayList<>(graphes.get(new Random().nextInt(graphes.size())).sommets);
             //5)
-            double r = 1 / ((double) new Random().nextInt(10) + 1);
+//            double r = 1 / ((double) new Random().nextInt(10) + 1);
 
             //6)
             double P = Math.exp((courante.cout() - s.cout()) / temperature);
-            if (P > r) {
+            if (P > Math.random()) {
                 courante.sommets = new ArrayList<>(s.sommets);
             }
 
