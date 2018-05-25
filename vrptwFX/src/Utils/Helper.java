@@ -39,16 +39,18 @@ public class Helper {
 
     public static boolean isSolutionValid(Tournee t) {
         boolean valid = false;
+//        System.out.println(t.customers.size() - 2);
         double soFar = t.customers.get(1).getStartTime();
-        for (int i = 2; i < t.customers.size() - 1; i++) {
+        for (int i = 1; i < t.customers.size() - 2; i++) {
+//            System.out.println("cust "+i);
             Customer c = t.customers.get(i);
             double distance = Helper.matriceDistance
-                    .get(t.getCustomers().get(t.getCustomers().size() - 1).getId() - 1)
-                    .get(c.getId() - 1);
-
-            if (soFar + distance > c.getStartTime() && soFar + distance < c.getDueTime()) {
+                    .get(c.getId() - 1)
+                    .get(t.customers.get(i + 1).getId() - 1);
+//            System.out.println(c.getStartTime()+"/"+soFar);
+            if (soFar + distance >= c.getStartTime() && soFar + distance <= c.getDueTime()) {
                 valid = true;
-                soFar = distance;
+                soFar += distance;
             } else
                 return false;
         }

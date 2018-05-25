@@ -9,7 +9,6 @@ import java.util.ArrayList;
  * Created by Anass on 2018-05-21.
  */
 public class Tournee {
-    public static ArrayList<ArrayList<Double>> matriceDistance;
     private Vehicule vehicule;
     public ArrayList<Customer> customers;
     public double currentTime;
@@ -22,11 +21,6 @@ public class Tournee {
     public void addCustomer(Customer c) {
         if (totalDomandesSoFar() + c.getDemandes() < Vehicule.CAPACITY) {
             customers.add(c);
-
-//            currentTime += Helper.matriceDistance
-//                    .get(getCustomers().get(getCustomers().size() - 1).getId() - 1)
-//                    .get(c.getId() - 1);
-//            System.out.println(currentTime);
         } else
             throw new RuntimeException("max demands exceeded for a single vehicle!");
     }
@@ -48,7 +42,7 @@ public class Tournee {
 
     public void addDepotStartEnd() {
         customers.add(FileIO.depot);
-        customers.add(0,FileIO.depot);
+        customers.add(0, FileIO.depot);
     }
 
     public ArrayList<Customer> getCustomers() {
@@ -61,10 +55,10 @@ public class Tournee {
 
     @Override
     public String toString() {
-        return "Tournee{" +
-                "vehicule=" + vehicule +
-                ", customers=" + customers +
-                '}';
+        String d = "";
+        for (Customer c : customers)
+            d += " " + c.getId();
+        return d;
     }
 
     public double getCurrentTime() {
@@ -73,12 +67,13 @@ public class Tournee {
 
     public double getCout() {
         double cout = 0;
-        for (Customer c : customers) {
-            if (c.getId() != 1)
-                cout += Helper.matriceDistance
-                        .get(customers.get(customers.size() - 1).getId() - 1)
-                        .get(c.getId() - 1);
+        for (int i = 0; i < customers.size() - 1; i++) {
+            cout += Helper.matriceDistance.
+                    get(customers.get(i).getId() - 1).
+                    get(customers.get(i + 1).getId() - 1);
+
         }
+
         return cout;
     }
 
