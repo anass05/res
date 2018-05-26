@@ -12,21 +12,27 @@ import java.util.Collections;
 /**
  * Created by Anass on 2018-05-24.
  */
-public class Tabou {
+public class TabouThread implements Runnable {
     private Solution solutionInitial;
     private static int TABOU_SIZE = 50000;
+    private Thread t;
+    private TBListener rstListener;
 
-    public Tabou(Solution solutionInitial,int tabou) {
+    public TabouThread(Solution solutionInitial, int tabou, TBListener rstListener) {
+        this.rstListener = rstListener;
         TABOU_SIZE = tabou;
         this.solutionInitial = new Solution(solutionInitial);
-        System.out.println("v num : " + solutionInitial.getTournees().size());
+        //System.out.println("v num : " + solutionInitial.getTournees().size());
 
     }
 
-    public Solution run() {
+    public void run() {
         double minBefore, minAfter;
         //minAfter = minBefore = solutionInitial.coutTotal();
+        int count = 0;
         do {
+            count++;
+            rstListener.onTBUpdate((float) count * (TABOU_SIZE / 10) / TABOU_SIZE);
             minBefore = solutionInitial.coutTotal();
             for (int i = 0; i < solutionInitial.getTournees().size(); i++) {
                 //System.out.println(solutionInitial.getTournees().size()-i);
@@ -46,7 +52,12 @@ public class Tabou {
             }
             minAfter = solutionInitial.coutTotal();
         } while (minAfter < minBefore);
-        return solutionInitial;
+        try {
+            rstListener.hasTBDone(solutionInitial);
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -77,5 +88,17 @@ public class Tabou {
         return tournees;
     }
 
+    public void start() {
+        if (t == null) {
+            t = new Thread(this, "TabouThread");
+            t.start();
+        }
+    }
+
+    public interface TBListener {
+        void hasTBDone(Solution solution);
+
+        void onTBUpdate(float percentage);
+    }
 
 }

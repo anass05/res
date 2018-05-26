@@ -1,17 +1,22 @@
 package sample;
 
-import Algorithms.Descente;
-import Algorithms.SolutionInitial;
 import Objects.Customer;
 import Objects.Solution;
 import Objects.Tournee;
 import Utils.FileIO;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -21,7 +26,7 @@ public class Sketch extends Application {
 
     private ArrayList<Customer> customers;
     private Solution solution;
-    String title;
+    private String title;
     //Group root;
 
 
@@ -40,14 +45,18 @@ public class Sketch extends Application {
     public void initialise() {
         Group root = new Group();
         Stage stage = new Stage();
-        drawSolution(root);
+        BorderPane borderPane = new BorderPane();
+        Pane pane = new Pane();
+
+        drawSolution(pane);
+        drawDetails(borderPane);
 
         for (Customer c : customers) {
             Circle circle = new Circle();
             circle.setCenterX(c.getX() * 5 + 10);
             circle.setCenterY(c.getY() * 5 + 10);
             circle.setRadius(3.0f);
-            root.getChildren().add(circle);
+            pane.getChildren().add(circle);
         }
 
 
@@ -56,17 +65,19 @@ public class Sketch extends Application {
         circle.setCenterY(FileIO.depot.getY() * 5 + 10);
         circle.setFill(Color.RED);
         circle.setRadius(6.0f);
-        root.getChildren().add(circle);
+        pane.getChildren().add(circle);
 
+        borderPane.setCenter(pane);
+        root.getChildren().add(borderPane);
 
-        Scene scene = new Scene(root, 500, 500);
+        Scene scene = new Scene(root, 850, 500);
         stage.setTitle(title);
         stage.setScene(scene);
         stage.show();
 
     }
 
-    public void drawSolution(Group root) {
+    public void drawSolution(Pane root) {
         int multiplier = 5;
         int ind = 0;
         Color cc;
@@ -128,5 +139,49 @@ public class Sketch extends Application {
         root.getChildren().add(circle);*/
 
     }
+
+    public void drawDetails(BorderPane borderPane) {
+        GridPane gridPane = new GridPane();
+
+        //Setting the padding
+        gridPane.setPadding(new javafx.geometry.Insets(10, 10, 10, 50));
+
+        //Setting the vertical and horizontal gaps between the columns
+        gridPane.setVgap(20);
+        gridPane.setHgap(20);
+
+        //Setting the Grid alignment
+        gridPane.setAlignment(Pos.CENTER);
+
+        Label l00 = new Label("Nombre de vehicules: ");
+        l00.setFont(Font.font(18));
+        Label l01 = new Label(solution.tournees.size() + "");
+        l01.setFont(Font.font(18));
+        Label l10 = new Label("Distance parcourue: ");
+        l10.setFont(Font.font(18));
+        String ss = solution.coutTotal() + "";
+        if (ss.length() > 6)
+            ss = ss.substring(0, 6);
+        Label l11 = new Label(ss);
+        l11.setFont(Font.font(18));
+        Label l20 = new Label("Nombre de clients: ");
+        l20.setFont(Font.font(18));
+        Label l21 = new Label(customers.size() + "");
+        l21.setFont(Font.font(18));
+        Button details = new Button("Plus de détails");
+
+        details.setOnAction(event -> new SketchTournee(customers, solution, "Résultats détaillés"));
+
+        gridPane.add(l00, 0, 0);
+        gridPane.add(l01, 1, 0);
+        gridPane.add(l10, 0, 1);
+        gridPane.add(l11, 1, 1);
+        gridPane.add(l20, 0, 2);
+        gridPane.add(l21, 1, 2);
+        gridPane.add(details, 1, 3);
+
+        borderPane.setRight(gridPane);
+    }
+
 
 }

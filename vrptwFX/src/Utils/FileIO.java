@@ -24,11 +24,12 @@ public class FileIO {
                     new BufferedReader(fileReader);
             int i = 0;
             while ((line = bufferedReader.readLine()) != null) {
-                if (i != 0) {
+                if (i > 8) {
                     String[] strings = line.split("\\s+");
+                    strings[0] = strings[1];
                     double[] ns = Arrays.stream(strings).mapToDouble(Double::parseDouble).toArray();
-                    Customer c = new Customer((int) ns[0], (int) ns[1], (int) ns[2], (int) ns[3], (int) ns[4], (int) ns[5]);
-                    if ((int) ns[0] == 1)
+                    Customer c = new Customer((int) ns[1] + 1, (int) ns[2], (int) ns[3], (int) ns[4], (int) ns[5], (int) ns[6]);
+                    if ((int) (ns[1] + 1) == 1)
                         depot = c;
                     customers.add(c);
                 }

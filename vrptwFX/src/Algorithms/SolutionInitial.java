@@ -38,6 +38,7 @@ public class SolutionInitial {
                 double distance = Helper.matriceDistance
                         .get(tournee.getCustomers().get(tournee.getCustomers().size() - 1).getId() - 1)
                         .get(c.getId() - 1);
+
                 if (tournee.getCustomers().get(tournee.getCustomers().size() - 1).getId() == 1)
                     distance = 0;
 
