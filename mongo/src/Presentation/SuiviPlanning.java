@@ -2,6 +2,7 @@ package Presentation;
 
 import Beans.Chapitre;
 import Beans.Module;
+import Beans.Planning;
 import Beans.Seance;
 
 import javax.swing.*;
@@ -23,14 +24,16 @@ public class SuiviPlanning extends JFrame {
     private JLabel dispo;
     private JComboCheckBox boxi;
     private Module module;
+    private DefaultTableModel model;
     private float TDLeft, TPLeft, CLeft, PLeft;
     private float TDCurrent, TPCurrent, CCurrent, PCurrent;
     private float totalLeft;
+    private Controleur controleur;
 
     public SuiviPlanning(Module module, Controleur controleur) {
         super("Suivi du planning du module " + module.getLibele());
         this.module = module;
-        System.out.println(module.getCahierCharges().getChapitres().get(0));
+        this.controleur = controleur;
         TDCurrent = module.getPrevue().getNhC();
         PCurrent = module.getPrevue().getNhP();
         CCurrent = module.getPrevue().getNhC();
@@ -45,7 +48,7 @@ public class SuiviPlanning extends JFrame {
 
     private void initialize() {
         setBounds(100, 100, 653, 406);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(new GridLayout(0, 2, 0, 0));
         JPanel tableHolder = new JPanel();
 
@@ -58,7 +61,7 @@ public class SuiviPlanning extends JFrame {
         String column[] = {"N°Semaine", "Contenu"};
         tableHolder.setLayout(new BoxLayout(tableHolder, BoxLayout.X_AXIS));
 
-        DefaultTableModel model = new DefaultTableModel(populateTable(), column);
+        model = new DefaultTableModel(populateTable(), column);
         JTable table = new JTable(model);
 
         table.setRowHeight(25);
@@ -78,6 +81,8 @@ public class SuiviPlanning extends JFrame {
 
 
         boxi = new JComboCheckBox(getItems(), false);
+
+
         JPanel panel_01x = new JPanel();
         panel_01x.setBorder(new EmptyBorder(0, 2, 0, 20));
 
@@ -281,20 +286,18 @@ public class SuiviPlanning extends JFrame {
                 BoxLayout(rightPannel, BoxLayout.Y_AXIS));
         rightPannel.add(panel_1);
         JPanel pan2 = new JPanel();
-        pan2.setBorder(new
+        pan2.setBorder(new EmptyBorder(10, 0, 0, 0));
 
-                EmptyBorder(10, 0, 0, 0));
         JButton valider = new JButton("Valider");
         JButton annuler = new JButton("Annuler");
 
+        valider.addActionListener(e -> assigneSeasncesToChapitres());
         pan2.add(valider);
         pan2.add(annuler);
 
         rightPannel.add(pan2);
 
-        getContentPane().
-
-                add(rightPannel);
+        getContentPane().add(rightPannel);
 
         setLocationRelativeTo(null);
 
@@ -302,25 +305,6 @@ public class SuiviPlanning extends JFrame {
 
         setVisible(true);
 
-    }
-
-    public String[][] populateTable2() {
-        String data[][] = {{"Sem 1", ""},
-                {"Sem 2", ""},
-                {"Sem 3", ""},
-                {"Sem 4", ""},
-                {"Sem 5", ""},
-                {"Sem 6", ""},
-                {"Sem 7", ""},
-                {"Sem 8", ""},
-                {"Sem 9", ""},
-                {"Sem 10", ""},
-                {"Sem 11", ""},
-                {"Sem 12", ""},
-                {"Sem 13", ""},
-                {"Sem 14", ""}
-        };
-        return data;
     }
 
     public String[][] populateTable() {
@@ -352,19 +336,14 @@ public class SuiviPlanning extends JFrame {
         projetProgress.setValue((int) (PLeft * 100 / PCurrent));
     }
 
+
     public ArrayList<String> getItems() {
         ArrayList<Chapitre> items = module.getCahierCharges().getChapitres();
         ArrayList<String> itemsToReturn = new ArrayList<>();
-        for (int i = items.size() - 1; i >= 0; i--) {
-            Chapitre c = items.get(i);
-            for (Seance s : module.getPlan().getSeances())
-                for (Chapitre ch : s.getChapitres())
-                    if (ch.equals(c))
-                        items.remove(c);
+        for (Chapitre c : items) {
+            if (c.getSeance() == null)
+                itemsToReturn.add(c.getTitre());
         }
-
-        for (Chapitre c : items)
-            itemsToReturn.add(c.getTitre());
         return itemsToReturn;
     }
 
@@ -373,7 +352,6 @@ public class SuiviPlanning extends JFrame {
             int multiplicateur = s.getChapitres().size();
             for (Chapitre c : s.getChapitres()) {
                 String ss = c.getTitre();
-                System.out.println(ss);
                 if (ss.equals("TD"))
                     TDLeft = TDLeft - 4 / multiplicateur;
                 else if (ss.equals("TP"))
@@ -386,5 +364,20 @@ public class SuiviPlanning extends JFrame {
             }
         }
         updateView();
+    }
+
+    public void assigneSeasncesToChapitres() {
+        for (int count = 0; count < model.getRowCount(); count++) {
+            String[] ss = model.getValueAt(count, 1).toString().split(", ");
+            for (String d : ss) {
+                if (!d.equals("") && !d.equals("TP") && !d.equals("TD") && !d.equals("Projet")) {
+                    module.getCahierCharges().getChapitre(d).setSeance(module.getPlan().getSeanceAt(count + 1));
+                }
+                else if (d.equals("TP") || d.equals("TD") || d.equals("Projet")) {
+                    module.getPlan().getSeanceAt(count + 1).addChapitre(new Chapitre(d));
+                }
+            }
+        }
+        controleur.suiviPlanning(module);
     }
 }

@@ -1,7 +1,5 @@
 package Beans;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
-
 import java.util.ArrayList;
 
 public class Module {
@@ -14,10 +12,12 @@ public class Module {
     private Personne personne;
     private CahierCharges cahierCharges;
     private Semestre semestre;
+    private String id;
 
-    public Module(String libele, Classe classe, ChargeHoraire prevue, ChargeHoraire reelle, Planning plan,
+    public Module(String id, String libele, Classe classe, ChargeHoraire prevue, ChargeHoraire reelle, Planning plan,
                   Personne personne, CahierCharges cahierCharges, Semestre semestre) {
         super();
+        this.id = id;
         this.libele = libele;
         this.classe = classe;
         ArrayList<Module> modules = classe.getModules();
@@ -102,6 +102,18 @@ public class Module {
 
     public void setSemestre(Semestre semestre) {
         this.semestre = semestre;
+    }
+
+    public String getPrevu() {
+        return "xx";
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package Presentation;
 
 import Beans.Module;
+import Beans.Personne;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -14,10 +15,12 @@ public class Dashboard {
     private JFrame frame;
     private ArrayList<Module> modules;
     private Controleur controleur;
+    private Personne p;
 
-    public Dashboard(ArrayList<Module> modules,Controleur controleur) {
+    public Dashboard(ArrayList<Module> modules, Controleur controleur, Personne p) {
         this.modules = modules;
         this.controleur = controleur;
+        this.p = p;
         initialize();
     }
 
@@ -25,7 +28,7 @@ public class Dashboard {
         frame = new JFrame("Dashboard");
         frame.setBounds(100, 100, 526, 392);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
+        frame.getContentPane().setLayout(new BorderLayout(0, 0));
 
         JPanel panel = new JPanel();
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -57,6 +60,24 @@ public class Dashboard {
                 });
             }
         }
+
+        JPanel navigationPanel = new JPanel();
+        navigationPanel.setBorder(new EmptyBorder(10, 20, 0, 15));
+        frame.getContentPane().add(navigationPanel, BorderLayout.NORTH);
+        navigationPanel.setLayout(new GridLayout(1, 2, 10, 10));
+
+        JLabel lblNom = new JLabel(p.getNom()+" "+p.getPrenom());
+        lblNom.setHorizontalAlignment(SwingConstants.LEFT);
+        navigationPanel.add(lblNom);
+
+        JPanel panel_1 = new JPanel();
+        navigationPanel.add(panel_1);
+        panel_1.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+
+        JButton btnDeconnexion = new JButton("deconnexion");
+        btnDeconnexion.setHorizontalAlignment(SwingConstants.RIGHT);
+        panel_1.add(btnDeconnexion);
+
         frame.setVisible(true);
     }
 

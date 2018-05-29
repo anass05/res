@@ -57,6 +57,13 @@ public class CahierCharges {
         this.module = module;
     }
 
+    public Chapitre getChapitre(String chapitreName) {
+        for (Chapitre cc : chapitres)
+            if (cc.getTitre().equals(chapitreName))
+                return cc;
+        return null;
+    }
+
 
     @Override
     public String toString() {

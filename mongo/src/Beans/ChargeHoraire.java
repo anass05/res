@@ -10,9 +10,9 @@ public class ChargeHoraire {
     private int nhP;
     private Module module;
     private ArrayList<Seance> seances;
+    private String id;
 
-
-    public ChargeHoraire(int nhC, int nhTD, int nhTP,int nhP, Module module, ArrayList<Seance> seances) {
+    public ChargeHoraire(String id,int nhC, int nhTD, int nhTP,int nhP, Module module, ArrayList<Seance> seances) {
         super();
         this.nhC = nhC;
         this.nhTD = nhTD;
@@ -20,6 +20,7 @@ public class ChargeHoraire {
         this.nhTP = nhTP;
         this.module = module;
         this.seances = seances;
+        this.id = id;
     }
 
     public int getNhC() {
@@ -72,6 +73,14 @@ public class ChargeHoraire {
 
     public void setNhTP(int nhTP) {
         this.nhTP = nhTP;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override

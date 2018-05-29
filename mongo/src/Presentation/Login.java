@@ -10,7 +10,7 @@ import javax.swing.*;
 /**
  * @author user
  */
-public class Login extends javax.swing.JDialog {
+public class Login extends JDialog {
 
     private Controleur controller;
     private javax.swing.JLabel jLabel1;
@@ -118,7 +118,7 @@ public class Login extends javax.swing.JDialog {
     }
 
     private void submitBtnActionPerformed(java.awt.event.ActionEvent evt) {
-        controller.login(login.getText(), password.getText());
+        controller.login(login.getText(), password.getText(),this);
     }
 
 }

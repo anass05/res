@@ -19,6 +19,14 @@ public class Seance {
 
     }
 
+    public Seance(String id, int semaine, Planning plan,boolean isResatable) {
+        this.id = id;
+        this.semaine = semaine;
+        this.plan = plan;
+        this.chapitres = new ArrayList<>();
+
+    }
+
     public String getId() {
         return id;
     }
@@ -57,6 +65,7 @@ public class Seance {
 
     public void addChapitre(Chapitre c) {
         this.chapitres.add(c);
+        //c.setSeance(this);
     }
 
     @Override

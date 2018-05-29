@@ -2,8 +2,8 @@ package Presentation;
 
 import Beans.Module;
 import Beans.Personne;
-import Beans.Professeur;
 import Metier.ModulesManager;
+import Persistence.ModulesDAO2;
 import Persistence.ProfesseurDOA;
 
 import javax.swing.*;
@@ -13,14 +13,14 @@ import javax.swing.*;
  */
 public class Controleur {
 
+    private JFrame loginFrame;
+    Module m;
+
     public Controleur() {
-        Module m = new ModulesManager().getModules().get(0);
-//        new Dashboard(new ModulesManager().getModules(),this);
-//        new AjouterPlanning(m,this);
-//        ouvrirSuiviPlanning(m);
-        JFrame j = new JFrame();
-        j.setVisible(true);
-        new Login(j,this,false).setVisible(true);
+//        m = new ModulesManager().getModules().get(0);
+        loginFrame = new JFrame();
+        new Login(loginFrame, this, false).setVisible(true);
+//        ouvrirDefinirPlanning(m);
     }
 
     public void ouvrirSuiviPlanning(Module m) {
@@ -28,23 +28,41 @@ public class Controleur {
     }
 
     public void ouvrirDefinirPlanning(Module m) {
-        new AjouterPlanning(m, this);
+        new DefinirPlanning(m, this);
     }
 
-    public void ouvrirDashboard(Personne p){
-        new Dashboard(new ModulesManager().getModules(p),this);
+    public void ouvrirDashboard(Personne p) {
+        new Dashboard(new ModulesManager().getModules(p), this,p);
     }
 
-    public void login(String login,String password){
-        Personne p = new ProfesseurDOA().login(login,password);
-        if(p != null){
+    public void login(String login, String password, JDialog dialog) {
+        Personne p = new ProfesseurDOA().login(login, password);
+        if (p != null) {
+            dialog.dispose();
+            loginFrame.dispose();
             ouvrirDashboard(p);
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null,
                     "Identifiant ou mot de passe incorrect!",
                     "Erreur d'authentification",
                     JOptionPane.WARNING_MESSAGE);
         }
+    }
+
+    public void insertPlanning(Module m){
+        new ModulesDAO2().definePlanning(m);
+    }
+
+    public void suiviPlanning(Module m){
+        new ModulesDAO2().suiviPlanning(m);
+    }
+
+    public void edtierChargeHoraire(Module m){
+        new EditerChargeHoraire(m,this);
+    }
+
+    public void saveModuleChargeHoraire(Module m){
+        new ModulesDAO2().saveModuleChargeHoraire(m);
     }
 
 }

@@ -9,11 +9,28 @@ public class Planning {
     private Module module;
     private String id;
 
+    public Planning() {
+        this.seances = new ArrayList<>();
+        populateSeances();
+    }
+
     public Planning(String id, boolean isValid) {
-        super();
         this.isValid = isValid;
         this.seances = new ArrayList<>();
         this.id = id;
+    }
+
+    public void populateSeances() {
+        for (int i = 0; i < 14; i++) {
+            seances.add(new Seance("", i + 1, this, false));
+        }
+    }
+
+    public Seance getSeanceAtSemaine(int sem) {
+        for (Seance s : seances)
+            if (s.getSemaine() == sem)
+                return s;
+        return null;
     }
 
     public String getId() {
